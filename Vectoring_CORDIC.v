@@ -130,8 +130,8 @@ reg enable_Next;
 
 wire [WordLength -1 :0] X_signbits = {WordLength{X_Current[WordLength -1 ]}};
 wire [WordLength -1 :0] Y_signbits = {WordLength{Y_Current[WordLength -1 ]}};
-wire [WordLength -1 :0] X_SHR =  X_Current >>> Count_Current;
-wire [WordLength -1 :0] Y_SHR =  Y_Current >>> Count_Current;
+wire [WordLength -1 :0] X_SHR =  X_Current >>> Count_Current;         //2^-i is represented in verilog as 2**-i and it represents shifting
+wire [WordLength -1 :0] Y_SHR =  Y_Current >>> Count_Current;          // >>> for logical shift to the right
 
 
 wire Direction = Y_Current[WordLength-1];
@@ -171,10 +171,10 @@ begin
 	   Count_Next = Count_Current;
 	   enable_Next = enable_Current;
 	   
-	   if(enable_Current)       //this will vary according to the sign of the Y since it's a Vectoring CORDIC
+	   if(enable_Current)       
 	   begin
-       X_Next = X_Current + (Direction ? -Y_SHR : Y_SHR );    
-       Y_Next = Y_Current + (Direction ? X_SHR : -X_SHR );    // >>> for logical shift to the right 
+       X_Next = X_Current + (Direction ? -Y_SHR : Y_SHR );    //this will vary according to the sign of the Y since it's a Vectoring CORDIC
+       Y_Next = Y_Current + (Direction ? X_SHR : -X_SHR );    
        Theta_Next = Theta_Current + (Direction ? - aTan_LUT : aTan_LUT);
 	   Count_Next = Count_Current +1;
 	        if(Count_Current == N -1 )
