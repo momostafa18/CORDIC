@@ -1,4 +1,11 @@
-
+/******************************************************************************
+ *
+ * Module: Vectoring Cordic
+ *
+ * Description: Vectoring CORDIC used for the rotation of the vectors to be placed on the x-axis
+ *
+ * Author: Mohamed Mostafa
+ *******************************************************************************************/
 module Rotate_CORDIC
 #(parameter N = 32,           //number of stages which is greater than the wordlength by 4 or more this helps in accuracy 
             WordLength = 28   // WordLength is 12 bits
@@ -23,7 +30,8 @@ reg [18:0]aTan_Value[0:(N-1)];
 
 wire [31:0] beta_lut [0:31];
 
-
+// here the number of bits used for the decimal point is 32 bits divided as 4 bits for the number on the left of the decimal point which almost 0 
+// and the rest of these bits is used for the numbers on the right of the decimal point
    
 `define BETA_0  28'b0000_0111_1000_0101_0011_1001_1000  // = atan 2^0     = 0.7853981633974483
 `define BETA_1  28'b0000_0100_0110_0011_0110_0100_0111  // = atan 2^(-1)  = 0.4636476090008061
@@ -113,24 +121,14 @@ reg enable_Next;
 
 wire [WordLength -1 :0] X_signbits = {WordLength{X_Current[WordLength -1 ]}};
 wire [WordLength -1 :0] Y_signbits = {WordLength{Y_Current[WordLength -1 ]}};
-wire [WordLength -1 :0] X_SHR =  X_Current >>> Count_Current;
-wire [WordLength -1 :0] Y_SHR =  Y_Current >>> Count_Current;
+wire [WordLength -1 :0] X_SHR =  X_Current >>> Count_Current;          //2^-i is represented in verilog as 2**-i and it represents shifting
+wire [WordLength -1 :0] Y_SHR =  Y_Current >>> Count_Current;          // >>> for logical shift to the right
 
 
 wire Direction = (Theta_Current[WordLength-1]);
 
 wire [31:0] aTan_LUT = beta_lut[Count_Current];
 
-
-
-initial 
-begin
-Factor = 1;
-for (i=0 ; i< N ; i=i+1)
-begin
-Factor = Factor * Cos_Value[i] ;
-end
-end
 
 always @(posedge clock or negedge Areset)
 begin
@@ -162,10 +160,10 @@ begin
 	   Count_Next = Count_Current;
 	   enable_Next = enable_Current;
 	   
-	   if(enable_Current)       //this will vary according to the sign of the Y since it's a Vectoring CORDIC
+	   if(enable_Current)       
 	   begin
-       X_Next = X_Current + (Direction ? Y_SHR : -Y_SHR );    //2^-i is represented in verilog as 2**-i and it represents shifting
-       Y_Next = Y_Current + (Direction ? -X_SHR : X_SHR );    // >>> for logical shift to the right 
+       X_Next = X_Current + (Direction ? Y_SHR : -Y_SHR );    //this will vary according to the sign of the Y since it's a Vectoring CORDIC
+       Y_Next = Y_Current + (Direction ? -X_SHR : X_SHR );     
        Theta_Next = Theta_Current + (Direction ? aTan_LUT : -aTan_LUT);
 	   Count_Next = Count_Current +1;
 	        if(Count_Current == N -1 )
