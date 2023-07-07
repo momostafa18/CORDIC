@@ -1,4 +1,4 @@
-#CORDIC Project
+#CORDICProject
 This repository contains a project that implements the CORDIC (Coordinate Rotation Digital Computer) algorithm. The CORDIC algorithm is a well-known technique used for various mathematical computations, such as trigonometric functions, vector rotations, and coordinate transformations.ns
 Implementation of the two modes vector and rotation mode has been finished 
 The major difference is that vector mode is just to rotate the vector to be on the x-axis while the rotation mode is for rotating the vector with some specific angle
