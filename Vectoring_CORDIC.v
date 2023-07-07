@@ -1,4 +1,11 @@
-
+/******************************************************************************
+ *
+ * Module: Vectoring Cordic
+ *
+ * Description: Vectoring CORDIC used for the rotation of the vectors to be placed on the x-axis
+ *
+ * Author: Mohamed Mostafa
+ *******************************************************************************************/
 module Vector_CORDIC
 #(parameter N = 32,           //number of stages which is greater than the wordlength by 4 or more this helps in accuracy 
             WordLength = 28   // WordLength is 12 bits
