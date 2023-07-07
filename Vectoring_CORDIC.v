@@ -8,8 +8,8 @@
  *******************************************************************************************/
 
 /*
-*The input and the output also here is 28 bits and it's divided as 14 bits for the numbers on the left of the decimal point
-*and 14 bits for the numbers on the right of the decimal point.
+*The input and the output also here is 28 bits and it's divided as 12 bits for the numbers on the left of the decimal point
+*and 16 bits for the numbers on the right of the decimal point.
 *
 */
 
