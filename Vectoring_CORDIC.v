@@ -38,7 +38,11 @@ wire [31:0] beta_lut [0:31];
 
 `define k  28'b0000_0000_0000_01_0110_0100_0111_00
 assign factor = `k;
-   
+
+
+	// here the number of bits used for the decimal point is 32 bits divided as 4 bits for the number on the left of the decimal point which almost 0 
+// and the rest of these bits is used for the numbers on the right of the decimal point
+	
 `define BETA_0  28'b0000_0111_1000_0101_0011_1001_1000  // = atan 2^0     = 0.7853981633974483
 `define BETA_1  28'b0000_0100_0110_0011_0110_0100_0111  // = atan 2^(-1)  = 0.4636476090008061
 `define BETA_2  28'b0000_0010_0100_0100_1001_0111_1000  // = atan 2^(-2)  = 0.24497866312686414
@@ -169,7 +173,7 @@ begin
 	   
 	   if(enable_Current)       //this will vary according to the sign of the Y since it's a Vectoring CORDIC
 	   begin
-       X_Next = X_Current + (Direction ? -Y_SHR : Y_SHR );    //2^-i is represented in verilog as 2**-i and it represents shifting
+       X_Next = X_Current + (Direction ? -Y_SHR : Y_SHR );    
        Y_Next = Y_Current + (Direction ? X_SHR : -X_SHR );    // >>> for logical shift to the right 
        Theta_Next = Theta_Current + (Direction ? - aTan_LUT : aTan_LUT);
 	   Count_Next = Count_Current +1;
