@@ -6,6 +6,13 @@
  *
  * Author: Mohamed Mostafa
  *******************************************************************************************/
+
+/*
+*The input and the output also here is 28 bits and it's divided as 14 bits for the numbers on the left of the decimal point
+*and 14 bits for the numbers on the right of the decimal point.
+*
+*/
+
 module Vector_CORDIC
 #(parameter N = 32,           //number of stages which is greater than the wordlength by 4 or more this helps in accuracy 
             WordLength = 28   // WordLength is 12 bits
